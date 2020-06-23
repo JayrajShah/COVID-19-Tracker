@@ -15,8 +15,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function Global() {
+export default function Global({ navigation }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [Data, setData] = useState({
     confirmed: {
@@ -64,6 +65,7 @@ export default function Global() {
   return (
     <View style={[styles.container, { backgroundColor: themeColor.primary }]}>
       <ScrollView
+        style={{ height: hp("70%") }}
         contentContainerStyle={[
           styles.scrollViewContainer,
           { backgroundColor: themeColor.primary },
@@ -78,6 +80,17 @@ export default function Global() {
           />
         }
       >
+        <TouchableOpacity
+          style={styles.devContainer}
+          onPress={() => {
+            navigation.navigate("About");
+          }}
+        >
+          <Text style={{ color: themeColor.titleText, elevation: 2 }}>
+            About Developer
+          </Text>
+        </TouchableOpacity>
+
         <Card
           title="Confirmed"
           data={Data.confirmed.value}
@@ -107,6 +120,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+  },
+  devContainer: {
+    padding: 10,
   },
   scrollViewContainer: {
     height: "100%",

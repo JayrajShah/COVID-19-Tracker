@@ -7,16 +7,34 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { themeContext } from "./context";
 import { dark, light } from "./ThemeObjects";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const Tab = createMaterialTopTabNavigator();
-function GlobalScreen() {
-  return <Global />;
+const Stack = createStackNavigator();
+function StackNavigator() {
+  return (
+    <Stack.Navigator initialRouteName="Global">
+      <Stack.Screen
+        name="Global"
+        component={GlobalScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="About"
+        component={AboutScreen}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+function GlobalScreen({ navigation }) {
+  return <Global navigation={navigation} />;
 }
 function CountriesScreen() {
   return <Countries />;
 }
-function AboutScreen() {
-  return <About />;
+function AboutScreen({ navigation }) {
+  return <About navigation={navigation} />;
 }
 const ScreenNavigation = () => {
   const [theme, setTheme] = useContext(themeContext);
@@ -42,16 +60,9 @@ const ScreenNavigation = () => {
         />
         <Tab.Screen
           name="Global"
-          component={GlobalScreen}
+          component={StackNavigator}
           options={{
             tabBarLabel: "Global",
-          }}
-        />
-        <Tab.Screen
-          name="About"
-          component={AboutScreen}
-          options={{
-            tabBarLabel: "About",
           }}
         />
       </Tab.Navigator>
